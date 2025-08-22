@@ -9,7 +9,7 @@ const getGeminiApiResponce = async(message) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       contents: [
-        { role: "user", parts: [{ text: massage }] }
+        { role: "user", parts: [{ text: message }] }
       ]
     })
   }
@@ -18,10 +18,10 @@ const getGeminiApiResponce = async(message) => {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`, options);
     const data = await response.json();
-    res.send(data.candidates[0].content.parts[0].text);
+    return(data.candidates[0].content.parts[0].text);
   }
   catch(err) {
-    console.log(`Fetch error: ${err}`);
+    console.log(`Gemini API error: ${err}`);
   }
 }
 
