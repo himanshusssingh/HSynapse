@@ -24,7 +24,6 @@ const ThreadSchama = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true,
         default: "New Chat"
     },
     message: [MessageSchema],

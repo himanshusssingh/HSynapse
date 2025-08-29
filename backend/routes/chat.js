@@ -68,7 +68,11 @@ router.delete("/thread/:threadId", async(req, res) => {
 
 //Chat
 router.post("/chat", async(req, res) => {
-    const {threadId, message} = req.body;
+    console.log(req.body.threadId)
+    console.log(req.body.contents[0].parts[0].text)
+    const {threadId, contents} = req.body;
+    const message = contents[0].parts[0].text;
+
 
     if(!threadId || !message) {
         res.status(404).json({error: "Missing the Required Field."})
@@ -76,16 +80,15 @@ router.post("/chat", async(req, res) => {
 
     try {
         let thread = await Thread.findOne({threadId});
-
         if(!thread) {
-            let thread = new Thread({
+            thread = new Thread({
                 threadId,
                 title: message,
-                message: [{role: "user", content: "message"}]
+                message: [{role: "user", content: message}]
             })
         }
         else {
-            thread.message.push({role: "user",content: "message"});
+            thread.message.push({role: "user",content: message});
         }
 
         const geminiReply = await getGeminiResponce(message);
